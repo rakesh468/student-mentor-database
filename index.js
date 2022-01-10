@@ -8,6 +8,7 @@ dotenv.config(); //dotenv configiration//
 // express on app //
 const app = express();
 
+// cors is middleware that allows anybody to access the data//
 app.use(cors())
 
 //middleware to convert all request into json format//
