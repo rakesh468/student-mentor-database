@@ -55,32 +55,37 @@ let students = [];
 
 app.post("/create_student", async (request, response) => {
   let student = {};
-  if (request.body.student_id) {
-    student.student_id = request.body.student_id;
-  } else {
-    response.status(400).send({ message: "Student id Required" });
-  }
+  
   if (request.body.student_name) {
     student.student_name = request.body.student_name;
   } else {
-    response.status(400).response({ message: "Student Name Required" });
+    response.status(401).response({ message: "Student Name Required" });
   }
   if (request.body.student_email) {
     student.student_email = request.body.student_email;
   } else {
-    response.status(400).response({ message: "Student Email Required" });
+    response.status(401).response({ message: "Student Email Required" });
   }
-  if (request.body.mentorassigned) {
-    student.mentorassigned = request.body.mentorassigned;
+  if (request.body.student_DOB) {
+    student.student_DOB= request.body.student_DOB;
   } else {
-    response.status(400).send({ message: "Assigned Mentor Required" });
+    response.status(401).send({ message: "DOB Required" });
+  }
+  if(request.body.course){
+    student.course=request.body.course;
+  }else{
+    response.status(401).send({message:"Course Required"})
+  }if(request.body.mentorassigned){
+    student.mentorassigned=request.body.mentorassigned
+  }else{
+    response.status(401).send({message:"Mentor required"})
   }
 
   students.push(student); //push method to push students object data inside array//
   await client.db("JGVV").collection("students").insertOne(student);
   student
     ? response.status(200).send({ message: "Student Created" })
-    : response.status(400).send({ message: "Required Details" });
+    : response.status(401).send({ message: "Required Details" });
 });
 
 //Asign students to mentor//
@@ -112,11 +117,6 @@ let mentors = [];
 
 app.post("/create_mentor", async (request, response) => {
   let mentor = {};
-  if (request.body.mentor_id) {
-    mentor.mentor_id = request.body.mentor_id;
-  } else {
-    response.status(400).send({ message: "Mentor id Required" });
-  }
   if (request.body.mentor_name) {
     mentor.mentor_name = request.body.mentor_name;
   } else {
@@ -127,10 +127,10 @@ app.post("/create_mentor", async (request, response) => {
   } else {
     response.status(400).send({ message: " Mentor Email Required" });
   }
-  if (request.body.students_assigned) {
-    mentor.students_assigned = request.body.students_assigned;
-  } else {
-    response.send({ message: "Student assigned Required" });
+  if(request.body.contact_no){
+    mentor.contact_no=request.body.contact_no
+  }else{
+    response.status(401).send({message:"Contact no Required"})
   }
 
   //push method to push mentors object data inside array//
