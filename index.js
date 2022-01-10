@@ -1,11 +1,14 @@
 import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config(); //dotenv configiration//
 
 // express on app //
 const app = express();
+
+app.use(cors())
 
 //middleware to convert all request into json format//
 app.use(express.json());
